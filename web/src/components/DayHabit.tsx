@@ -6,12 +6,13 @@ import { Check } from 'phosphor-react';
 import { ProgressBar } from './ProgressBar';
 
 interface DayHabitProps {
-  completed: number;
-  amount: number;
+  amount?: number;
+  completed?: number;
+  date: Date;
 }
 
-function DayHabit({ completed, amount }: DayHabitProps) {
-  const progress = Math.round((completed / amount) * 100) || 0;
+function DayHabit({ completed = 0, amount = 0 }: DayHabitProps) {
+  const progress = amount > 0 ? Math.round((completed / amount) * 100) : 0;
 
   return (
     <Popover.Root>

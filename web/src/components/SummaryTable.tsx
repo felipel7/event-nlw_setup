@@ -1,5 +1,8 @@
 import { DayHabit } from './DayHabit';
 import { generateDateRange } from '../utils/generateDateRange';
+import { useEffect, useState } from 'react';
+import { api } from '../lib/axios';
+import dayjs from 'dayjs';
 
 export const weekDays = [
   { id: 0, label: 'S', name: 'Sunday' },
@@ -16,7 +19,20 @@ const daysOfTheYear = generateDateRange();
 const minimumSummaryDatesSizes = 18 * 7;
 const amountDaysToFill = minimumSummaryDatesSizes - generateDateRange.length;
 
+type SummaryType = {
+  id: string;
+  date: string;
+  amount: number;
+  completed: number;
+}[];
+
 function SummaryTable() {
+  const [summary, setSummary] = useState<SummaryType>([]);
+
+  useEffect(() => {
+    api.get('summary').then(({ data }) => setSummary(data));
+  }, []);
+
   return (
     <div className="flex w-full">
       <div className="grid grid-flow-row gap-3 grid-rows-7">
@@ -31,13 +47,20 @@ function SummaryTable() {
       </div>
 
       <div className="grid grid-flow-col gap-3 grid-rows-7">
-        {daysOfTheYear.map(day => (
-          <DayHabit
-            key={`${day.toString().replace(/[^a-zA-Z0-9]/g, '')}`}
-            amount={5}
-            completed={Math.round(Math.random() * 5)}
-          />
-        ))}
+        {daysOfTheYear.map(day => {
+          const dayInSummary = summary.find(d =>
+            dayjs(day).isSame(d.date, 'day')
+          );
+
+          return (
+            <DayHabit
+              key={`${day.toString().replace(/[^a-zA-Z0-9]/g, '')}`}
+              amount={dayInSummary?.amount}
+              completed={dayInSummary?.completed}
+              date={day}
+            />
+          );
+        })}
 
         {amountDaysToFill > 0 &&
           Array.from({ length: amountDaysToFill }).map((_, i) => (
