@@ -63,18 +63,18 @@ function HabitsList({ date, onProgressChanged }: HabitsListProps) {
       {habitsInfo?.dayHabits.map(habit => (
         <Checkbox.Root
           key={habit.id}
-          className="flex items-center gap-3 group"
+          className="flex items-center gap-3 group focus:outline-none disabled:cursor-not-allowed"
           defaultChecked={habitsInfo.completedHabits.includes(habit.id)}
           disabled={isDateInThePast}
           onCheckedChange={() => handleCheckedChange(habit.id)}
         >
-          <div className="flex items-center justify-center w-8 h-8 border-2 rounded-lg bg-zinc-900 border-zinc-800 group-data-[state=checked]:bg-green-500 group-data-[state=checked]:border-green-500">
+          <div className="h-8 w-8 rounded-lg flex items-center justify-center bg-zinc-900 border-2 border-zinc-800 group-data-[state=checked]:bg-green-500 group-data-[state=checked]:border-green-50 transition-colors group-focus:ring-2 group-focus:ring-violet-600 group-focus:ring-offset-2 group-focus:ring-offset-background">
             <Checkbox.Indicator>
               <Check size={20} className="text-white" />
             </Checkbox.Indicator>
           </div>
 
-          <strong className="text-xl font-semibold leading-tight text-white group-data-[state=checked]:line-through group-data-[state=checked]:text-zinc-400">
+          <strong className="font-semibold text-xl text-white leading-tight group-data-[state=checked]:line-through group-data-[state=checked]:text-zinc-400">
             {habit.title}
           </strong>
         </Checkbox.Root>
