@@ -3,38 +3,47 @@ import * as Checkbox from '@radix-ui/react-checkbox';
 import { Check } from 'phosphor-react';
 
 import { weekDays } from './SummaryTable';
+import { api } from '../lib/axios';
 
 type NewHabitType = {
   title: string;
-  days: number[];
+  weekDays: number[];
 };
 
 function NewHabitForm() {
   const [newHabit, setNewHabit] = useState<NewHabitType>({} as NewHabitType);
+  const [inputValue, setInputValue] = useState('');
 
-  function handleSubmit(event: FormEvent) {
+  async function handleSubmit(event: FormEvent) {
     event.preventDefault();
-    console.log(newHabit);
+    if (!newHabit.title || newHabit.weekDays?.length === 0) return;
+
+    await api.post('/habits', newHabit);
+
+    alert('New habit has been added.');
+    // clear form
+    setNewHabit({} as NewHabitType);
+    setInputValue('');
   }
 
   function handleCheckedChange(day_id: number) {
-    if (!newHabit.days) {
+    if (!newHabit.weekDays) {
       setNewHabit(prev => ({
         ...prev,
-        days: [day_id],
+        weekDays: [day_id],
       }));
       return;
     }
 
-    if (newHabit.days.includes(day_id)) {
+    if (newHabit.weekDays.includes(day_id)) {
       setNewHabit(prev => ({
         ...prev,
-        days: prev.days.filter(id => id !== day_id),
+        weekDays: prev.weekDays.filter(id => id !== day_id),
       }));
     } else {
       setNewHabit(prev => ({
         ...prev,
-        days: [...prev.days, day_id],
+        weekDays: [...prev.weekDays, day_id],
       }));
     }
   }
@@ -50,12 +59,14 @@ function NewHabitForm() {
           className="w-full p-4 mt-3 text-white rounded-lg bg-zinc-800 placeholder:text-zinc-500"
           id="title"
           name="title"
-          onChange={e =>
+          value={inputValue}
+          onChange={e => {
+            setInputValue(e.target.value);
             setNewHabit(prev => ({
               ...prev,
-              title: e.target.value,
-            }))
-          }
+              title: inputValue,
+            }));
+          }}
           placeholder="Type here..."
           type="text"
         />
@@ -71,6 +82,7 @@ function NewHabitForm() {
         <p className="flex flex-col gap-2 mt-3" key={day.id}>
           <Checkbox.Root
             className="flex items-center gap-3 group"
+            checked={newHabit.weekDays?.includes(day.id) ? true : false}
             onCheckedChange={() => handleCheckedChange(day.id)}
           >
             <div className="flex items-center justify-center w-8 h-8 border-2 rounded-lg bg-zinc-900 border-zinc-800 group-data-[state=checked]:bg-green-500 group-data-[state=checked]:border-green-500">
