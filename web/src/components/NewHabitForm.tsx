@@ -1,4 +1,6 @@
+import * as Checkbox from '@radix-ui/react-checkbox';
 import { Check } from 'phosphor-react';
+import { weekDays } from './SummaryTable';
 
 function NewHabitForm() {
   return (
@@ -18,8 +20,24 @@ function NewHabitForm() {
       </p>
 
       <p className="mt-4">
-        <label className="font-semibold leading-tight" htmlFor=""></label>
+        <label className="font-semibold leading-tight" htmlFor="">
+          What's the frequency?
+        </label>
       </p>
+
+      {weekDays.map(day => (
+        <p className="flex flex-col gap-2 mt-3" key={day.id}>
+          <Checkbox.Root className="flex items-center gap-3 group">
+            <div className="flex items-center justify-center w-8 h-8 border-2 rounded-lg bg-zinc-900 border-zinc-800 group-data-[state=checked]:bg-green-500 group-data-[state=checked]:border-green-500">
+              <Checkbox.Indicator>
+                <Check size={20} className="text-white" />
+              </Checkbox.Indicator>
+            </div>
+
+            <strong className="leading-tight text-white">{day.name}</strong>
+          </Checkbox.Root>
+        </p>
+      ))}
 
       <button
         type="submit"

@@ -1,14 +1,14 @@
 import { DayHabit } from './DayHabit';
 import { generateDateRange } from '../utils/generateDateRange';
 
-const weekDays = [
-  { id: 0, label: 'S' },
-  { id: 1, label: 'M' },
-  { id: 2, label: 'T' },
-  { id: 3, label: 'W' },
-  { id: 4, label: 'T' },
-  { id: 5, label: 'F' },
-  { id: 6, label: 'S' },
+export const weekDays = [
+  { id: 0, label: 'S', name: 'Sunday' },
+  { id: 1, label: 'M', name: 'Monday' },
+  { id: 2, label: 'T', name: 'Tuesday' },
+  { id: 3, label: 'W', name: 'Wednesday' },
+  { id: 4, label: 'T', name: 'Thursday' },
+  { id: 5, label: 'F', name: 'Friday' },
+  { id: 6, label: 'S', name: 'Saturday' },
 ];
 
 const daysOfTheYear = generateDateRange();
