@@ -1,4 +1,4 @@
-import { DayHabit } from './dayHabit';
+import { DayHabit } from './DayHabit';
 import { generateDateRange } from '../utils/generateDateRange';
 
 const weekDays = [
@@ -18,19 +18,19 @@ const amountDaysToFill = minimumSummaryDatesSizes - generateDateRange.length;
 
 function SummaryTable() {
   return (
-    <div className="w-full flex">
-      <div className="grid grid-rows-7 grid-flow-row gap-3">
+    <div className="flex w-full">
+      <div className="grid grid-flow-row gap-3 grid-rows-7">
         {weekDays.map(day => (
           <div
             key={day.id}
-            className="text-zinc-400 text-xl font-bold h-10 w-10 flex items-center justify-center"
+            className="flex items-center justify-center w-10 h-10 text-xl font-bold text-zinc-400"
           >
             {day.label}
           </div>
         ))}
       </div>
 
-      <div className="grid grid-rows-7 grid-flow-col gap-3">
+      <div className="grid grid-flow-col gap-3 grid-rows-7">
         {daysOfTheYear.map(day => (
           <DayHabit key={`${day.toString().replace(/[^a-zA-Z0-9]/g, '')}`} />
         ))}
@@ -39,7 +39,7 @@ function SummaryTable() {
           Array.from({ length: amountDaysToFill }).map((_, i) => (
             <div
               key={i}
-              className="h-10 w-10 bg-zinc-900 border-2 border-zinc-800 rounded-lg opacity-40 cursor-not-allowed"
+              className="w-10 h-10 border-2 rounded-lg cursor-not-allowed bg-zinc-900 border-zinc-800 opacity-40"
             />
           ))}
       </div>
