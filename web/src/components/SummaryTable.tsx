@@ -32,7 +32,11 @@ function SummaryTable() {
 
       <div className="grid grid-flow-col gap-3 grid-rows-7">
         {daysOfTheYear.map(day => (
-          <DayHabit key={`${day.toString().replace(/[^a-zA-Z0-9]/g, '')}`} />
+          <DayHabit
+            key={`${day.toString().replace(/[^a-zA-Z0-9]/g, '')}`}
+            amount={5}
+            completed={Math.round(Math.random() * 5)}
+          />
         ))}
 
         {amountDaysToFill > 0 &&
