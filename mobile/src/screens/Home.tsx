@@ -1,9 +1,14 @@
-import { View, Text, ScrollView } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import { useCallback, useState } from 'react';
+import { View, Text, ScrollView, Alert } from 'react-native';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
+
+import { api } from '../lib/axios';
+import { generateDateRange } from '../utils/generateDateRange';
+import dayjs from 'dayjs';
 
 import { Header } from '../components/Header';
+import { Loading } from '../components/Loading';
 import { DayHabit, SQUARE_DAY_SIZE } from '../components/DayHabit';
-import { generateDateRange } from '../utils/generateDateRange';
 
 export const weekDays = [
   { id: 0, label: 'S', name: 'Sunday' },
@@ -19,8 +24,40 @@ const minimumSummaryDatesSizes = 18 * 5;
 const amountDaysToFill = minimumSummaryDatesSizes - generateDateRange.length;
 const daysOfTheYear = generateDateRange();
 
+type SummaryType = {
+  id: string;
+  date: string;
+  amount: number;
+  completed: number;
+}[];
+
 function Home() {
+  const [summary, setSummary] = useState<SummaryType | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
   const { navigate } = useNavigation();
+
+  async function getData() {
+    try {
+      setIsLoading(true);
+      const response = await api.get('summary');
+      setSummary(response.data);
+    } catch (error) {
+      console.log(error);
+      Alert.alert('Error', 'Something wrong');
+    } finally {
+      setIsLoading(false);
+    }
+  }
+
+  useFocusEffect(
+    useCallback(() => {
+      getData();
+    }, [])
+  );
+
+  if (isLoading) {
+    return <Loading />;
+  }
 
   return (
     <View className="flex-1 px-8 pt-16 bg-background ">
@@ -43,26 +80,37 @@ function Home() {
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{ paddingBottom: 100 }}
       >
-        <View className="flex-row flex-wrap">
-          {daysOfTheYear.map(day => (
-            <DayHabit
-              onPress={() => navigate('habit', { date: day.toISOString() })}
-              key={`${day.toString().replace(/[^a-zA-Z0-9]/g, '')}`}
-            />
-          ))}
+        {summary && (
+          <View className="flex-row flex-wrap">
+            {daysOfTheYear.map(day => {
+              const findHabit = summary.find(d =>
+                dayjs(day).isSame(d.date, 'day')
+              );
 
-          {amountDaysToFill > 0 &&
-            Array.from({ length: amountDaysToFill }).map((_, i) => (
-              <View
-                key={i}
-                className="m-1 border-2 rounded-lg bg-zinc-900 border-zinc-800 opacity-40"
-                style={{
-                  width: SQUARE_DAY_SIZE,
-                  height: SQUARE_DAY_SIZE,
-                }}
-              ></View>
-            ))}
-        </View>
+              return (
+                <DayHabit
+                  key={`${day.toString().replace(/[^a-zA-Z0-9]/g, '')}`}
+                  onPress={() => navigate('habit', { date: day.toISOString() })}
+                  date={day}
+                  amount={findHabit?.amount}
+                  completed={findHabit?.completed}
+                />
+              );
+            })}
+
+            {amountDaysToFill > 0 &&
+              Array.from({ length: amountDaysToFill }).map((_, i) => (
+                <View
+                  key={i}
+                  className="m-1 border-2 rounded-lg bg-zinc-900 border-zinc-800 opacity-40"
+                  style={{
+                    width: SQUARE_DAY_SIZE,
+                    height: SQUARE_DAY_SIZE,
+                  }}
+                ></View>
+              ))}
+          </View>
+        )}
       </ScrollView>
     </View>
   );
