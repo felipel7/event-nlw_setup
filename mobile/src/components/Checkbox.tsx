@@ -5,6 +5,7 @@ import {
   View,
 } from 'react-native';
 import { Feather } from '@expo/vector-icons';
+
 import colors from 'tailwindcss/colors';
 
 interface CheckboxProps extends TouchableOpacityProps {
@@ -27,7 +28,7 @@ function Checkbox({ checked = false, title, ...rest }: CheckboxProps) {
         <View className="w-8 h-8 rounded-lg bg-zinc-900"></View>
       )}
 
-      <Text className="ml-3 text-base text-white">{title}</Text>
+      <Text className="ml-3 text-base font-semibold text-white">{title}</Text>
     </TouchableOpacity>
   );
 }

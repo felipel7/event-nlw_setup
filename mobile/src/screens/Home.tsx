@@ -1,4 +1,5 @@
 import { View, Text, ScrollView } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 
 import { Header } from '../components/Header';
 import { DayHabit, SQUARE_DAY_SIZE } from '../components/DayHabit';
@@ -19,6 +20,8 @@ const amountDaysToFill = minimumSummaryDatesSizes - generateDateRange.length;
 const daysOfTheYear = generateDateRange();
 
 function Home() {
+  const { navigate } = useNavigation();
+
   return (
     <View className="flex-1 px-8 pt-16 bg-background ">
       <Header />
@@ -42,7 +45,10 @@ function Home() {
       >
         <View className="flex-row flex-wrap">
           {daysOfTheYear.map(day => (
-            <DayHabit key={`${day.toString().replace(/[^a-zA-Z0-9]/g, '')}`} />
+            <DayHabit
+              onPress={() => navigate('habit', { date: day.toISOString() })}
+              key={`${day.toString().replace(/[^a-zA-Z0-9]/g, '')}`}
+            />
           ))}
 
           {amountDaysToFill > 0 &&

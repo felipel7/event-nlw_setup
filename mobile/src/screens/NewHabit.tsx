@@ -7,10 +7,11 @@ import {
   View,
 } from 'react-native';
 import { Feather } from '@expo/vector-icons';
+import colors from 'tailwindcss/colors';
+
 import { BackButton } from '../components/BackButton';
 import { Checkbox } from '../components/Checkbox';
 import { weekDays } from './Home';
-import colors from 'tailwindcss/colors';
 
 function NewHabit() {
   const [selectedDays, setSelectedDays] = useState<number[]>([]);
@@ -40,7 +41,7 @@ function NewHabit() {
         </Text>
 
         <TextInput
-          className="h-12 pl-4 mt-3 text-white rounded-lg bg-zinc-800 focus:border-2 focus:border-green-600 "
+          className="h-12 pl-4 mt-3 text-white border-2 rounded-lg bg-zinc-900 focus:border-2 focus:border-green-600 border-zinc-800"
           placeholder="Type your new habit here..."
           placeholderTextColor={colors.zinc[400]}
         />
