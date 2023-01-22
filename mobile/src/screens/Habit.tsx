@@ -26,13 +26,15 @@ function Habit() {
       >
         <BackButton />
 
-        <Text className="text-base font-semibold text-zinc-400">{day}</Text>
+        <Text className="mt-6 text-base font-semibold text-zinc-400">
+          {day}
+        </Text>
         <Text className="text-3xl font-extrabold text-white">
           {dayAndMonth}
         </Text>
 
         <ProgressBar progress={75} />
-        <View className="mt-6 ">
+        <View className="mt-6">
           <Checkbox title="Drink 2L of water" checked={false} />
           <Checkbox title="Walk" checked={true} />
           <Checkbox title="Sleep" checked={false} />

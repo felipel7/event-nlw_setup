@@ -3,6 +3,7 @@ import * as Checkbox from '@radix-ui/react-checkbox';
 import { Check } from 'phosphor-react';
 
 import { weekDays } from './SummaryTable';
+
 import { api } from '../lib/axios';
 
 type NewHabitType = {

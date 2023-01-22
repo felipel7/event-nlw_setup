@@ -1,22 +1,28 @@
-import * as Checkbox from '@radix-ui/react-checkbox';
+import { useState } from 'react';
 import * as Popover from '@radix-ui/react-popover';
 import clsx from 'clsx';
 import dayjs from 'dayjs';
-import { Check } from 'phosphor-react';
 
 import { ProgressBar } from './ProgressBar';
+import { HabitsList } from './HabitsList';
 
 interface DayHabitProps {
   amount?: number;
-  completed?: number;
+  defaultCompleted?: number;
   date: Date;
 }
 
-function DayHabit({ completed = 0, amount = 0, date }: DayHabitProps) {
+function DayHabit({ defaultCompleted = 0, amount = 0, date }: DayHabitProps) {
+  const [completed, setCompleted] = useState(defaultCompleted);
+
   const progress = amount > 0 ? Math.round((completed / amount) * 100) : 0;
 
   const dayAndMonth = dayjs(date).format('DD/MM');
   const day = dayjs(date).format('dddd');
+
+  function handleProgressChanged(habitsCompleted: number) {
+    setCompleted(habitsCompleted);
+  }
 
   return (
     <Popover.Root>
@@ -39,20 +45,8 @@ function DayHabit({ completed = 0, amount = 0, date }: DayHabitProps) {
           </time>
 
           <ProgressBar progress={progress} />
-          <div className="flex flex-col gap-3 mt-6">
-            <Checkbox.Root className="flex items-center gap-3 group">
-              <div className="flex items-center justify-center w-8 h-8 border-2 rounded-lg bg-zinc-900 border-zinc-800 group-data-[state=checked]:bg-green-500 group-data-[state=checked]:border-green-500">
-                <Checkbox.Indicator>
-                  <Check size={20} className="text-white" />
-                </Checkbox.Indicator>
-              </div>
 
-              <strong className="text-xl font-semibold leading-tight text-white group-data-[state=checked]:line-through group-data-[state=checked]:text-zinc-400">
-                Teste
-              </strong>
-            </Checkbox.Root>
-          </div>
-
+          <HabitsList date={date} onProgressChanged={handleProgressChanged} />
           <Popover.Arrow className="fill-zinc-900" height={12} width={18} />
         </Popover.Content>
       </Popover.Portal>
