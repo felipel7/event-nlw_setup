@@ -1,10 +1,10 @@
 import { useCallback, useState } from 'react';
 import { View, Text, ScrollView, Alert } from 'react-native';
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
+import dayjs from 'dayjs';
 
 import { api } from '../lib/axios';
 import { generateDateRange } from '../utils/generateDateRange';
-import dayjs from 'dayjs';
 
 import { Header } from '../components/Header';
 import { Loading } from '../components/Loading';

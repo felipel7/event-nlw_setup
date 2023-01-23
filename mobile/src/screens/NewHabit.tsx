@@ -30,7 +30,7 @@ function NewHabit() {
   async function handleNewHabitCreation() {
     try {
       if (!title.trim() || selectedDays.length === 0) {
-        Alert.alert(
+        return Alert.alert(
           'You must choose',
           'the days frequency and the title before you can establish a new habit.'
         );
