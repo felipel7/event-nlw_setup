@@ -219,7 +219,7 @@ $ yarn dev
 
 ## 📝 License
 
-This project is under the MIT license. See the [LICENSE](LICENSE.md) for more details.
+This project is under the MIT license. See the [LICENSE](LICENSE) for more details.
 
 [⬆ Back to the top](#Nlw-Setup-2023)
 
